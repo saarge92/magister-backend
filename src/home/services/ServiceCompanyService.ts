@@ -32,7 +32,9 @@ export class ServiceCompanyService {
   public async createService(createServiceDto: Partial<CreateServiceDto>, file: any): Promise<ServiceCompanyEntity> {
     const newService = this.serviceCompanyRepository.create();
     newService.name = createServiceDto.name;
-    const relatedPath = 'public/services/' + file.originalname;
+    const splittedNames: string[] = file.originalname.split('.');
+    const randomNameFile = splittedNames[0] + '_' + Date.now();
+    const relatedPath = 'public/services/' + randomNameFile + '.' + splittedNames[1];
     await this.fileService.saveFile(relatedPath, file);
     newService.image_path = relatedPath;
     await this.serviceCompanyRepository.save(newService);
