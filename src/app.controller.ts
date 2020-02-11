@@ -15,4 +15,5 @@ export class AppController {
   async getFileStatic(@Res() res, @Param('imageId') imageId): Promise<any> {
     res.sendFile(imageId, { root: 'src/public/services' });
   }
+
 }
