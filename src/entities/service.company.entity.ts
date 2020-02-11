@@ -9,10 +9,10 @@ import {
   UpdateDateColumn,
 } from 'typeorm';
 
-@Entity({ name: 'company_service' })
+@Entity({ name: 'company_services' })
 export class ServiceCompanyEntity {
   @PrimaryGeneratedColumn('uuid')
-  @PrimaryColumn('varchar', { length: 36 })
+  @PrimaryColumn('varchar', { length: 250 })
   public id: string;
 
   @Column({ type: 'varchar', name: 'name', nullable: false })

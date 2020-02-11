@@ -35,3 +35,5 @@ lerna-debug.log*
 
 src/public/services/*
 src/public/*
+
+.env
