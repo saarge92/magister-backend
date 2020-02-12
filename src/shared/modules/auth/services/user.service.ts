@@ -5,6 +5,10 @@ import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
 
+/**
+ * Service for bussines logic of users entity
+ * @copyright Serdar Durdyev
+ */
 @Injectable()
 export class UserService {
   private saltRounds: number = 10;
@@ -24,6 +28,10 @@ export class UserService {
     return newUser;
   }
 
+  /**
+   * Получение пользователя по email
+   * @param email Email пользователя
+   */
   public async getUserByEmail(email: string): Promise<User> {
     return await this.userRepository.findOne({ where: { email } });
   }

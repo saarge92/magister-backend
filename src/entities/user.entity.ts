@@ -2,11 +2,12 @@ import {
   BeforeInsert,
   Column,
   CreateDateColumn,
-  Entity,
+  Entity, JoinTable, OneToMany,
   PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { Role } from './role.entity';
 
 @Entity({ name: 'users' })
 export class User {
@@ -32,4 +33,16 @@ export class User {
   public beforeInsert() {
     this.created_date = new Date();
   }
+
+  @JoinTable({
+    name: 'user_in_roles', joinColumn: {
+      name: 'userId',
+      referencedColumnName: 'id',
+    },
+    inverseJoinColumn: {
+      name: 'roleId',
+      referencedColumnName: 'id',
+    },
+  })
+  public roles: Role[];
 }

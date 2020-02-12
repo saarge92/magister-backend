@@ -1,26 +1,22 @@
 import {
-  BeforeInsert, BeforeUpdate,
+  BeforeInsert,
   Column,
   CreateDateColumn,
-  Entity,
-  Generated,
+  Entity, JoinTable, ManyToOne,
   PrimaryColumn,
   PrimaryGeneratedColumn,
   UpdateDateColumn,
 } from 'typeorm';
+import { User } from './user.entity';
 
-@Entity({ name: 'company_services' })
-export class ServiceCompanyEntity {
+@Entity({ name: 'roles' })
+export class Role {
   @PrimaryGeneratedColumn('uuid')
-  @PrimaryColumn('varchar', { length: 250 })
+  @PrimaryColumn({ type: 'varchar', length: 250 })
   public id: string;
 
-  @Column({ type: 'varchar', name: 'name', nullable: false })
+  @Column({ name: 'name', nullable: false, length: 255 })
   public name: string;
-
-
-  @Column({ type: 'varchar', name: 'image_path', nullable: false })
-  public image_path: string;
 
   @CreateDateColumn({ name: 'created_date' })
   // tslint:disable-next-line:variable-name
@@ -33,10 +29,5 @@ export class ServiceCompanyEntity {
   @BeforeInsert()
   public beforeInsert() {
     this.created_date = new Date();
-  }
-
-  @BeforeUpdate()
-  public beforeUpdete() {
-    this.updated_date = new Date();
   }
 }

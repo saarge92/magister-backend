@@ -4,11 +4,13 @@ import { UserDto } from '../../../dto/user.dto';
 import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
 import { User } from '../../../../entities/user.entity';
+import { RoleService } from './role.service';
 
 @Injectable()
 export class AuthService {
   constructor(private readonly jwtService: JwtService,
               private readonly userService: UserService,
+              private readonly roleService: RoleService,
   ) {
   }
 
@@ -17,7 +19,10 @@ export class AuthService {
    * @param userDto Object with parameters about users
    */
   public async registerUser(userDto: UserDto): Promise<string> {
+    const existedUser = await this.userService.getUserByEmail(userDto.email);
+    if (existedUser) throw new HttpException('Пользователь уже зарегистрирован', HttpStatus.CONFLICT);
     const createdUser = await this.userService.createUser(userDto);
+    await this.roleService.addUserToRoleByUserId('User', createdUser.id);
     const token = this.signUser(createdUser);
     return token;
   }
@@ -26,7 +31,7 @@ export class AuthService {
    * Check user in database & generate token
    * @param userDto Object with parameters about users
    */
-  public async checkUser(userDto: UserDto): Promise<string> {
+  public async loginUser(userDto: UserDto): Promise<string> {
     const existedUser = await this.userService.getUserByEmail(userDto.email);
     if (!existedUser) {
       throw new HttpException('Пользователь или пароль не совпадают', HttpStatus.UNAUTHORIZED);
