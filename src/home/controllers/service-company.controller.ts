@@ -6,7 +6,7 @@ import {
   Param,
   Patch,
   Post, Res,
-  UploadedFile,
+  UploadedFile, UseGuards,
   UseInterceptors,
 } from '@nestjs/common';
 import { ServiceCompanyEntity } from '../../entities/service.company.entity';
@@ -14,6 +14,8 @@ import { ServiceCompanyService } from '../services/ServiceCompanyService';
 import { CreateServiceDto } from '../dto/create-service.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Request, Response } from 'express';
+import { RolesGuard } from '../../guards/role.guard';
+import { Roles } from '../../guards/roles.decorator';
 
 @Controller('api/service')
 export class ServiceCompanyController {

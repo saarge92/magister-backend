@@ -53,6 +53,19 @@ export class RoleService {
   }
 
   /**
+   * Check if user in role
+   * @param roleName Role of checking role
+   * @param user Checking user
+   */
+  public async isUserInRole(roleName: string, user: User): Promise<boolean> {
+    const existedRole = await this.roleRepository.findOne({ where: { name: roleName } });
+    if (!existedRole) throw new HttpException('Данная роль не найдена', HttpStatus.CONFLICT);
+    const userInRole = await this.userInRolesRepository.findOne({ where: { userId: user.id, roleId: existedRole.id } });
+    console.log(userInRole);
+    return userInRole != null;
+  }
+
+  /**
    * Check if user
    * @param roleId
    * @param userId

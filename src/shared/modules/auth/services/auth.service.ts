@@ -6,6 +6,10 @@ import * as bcrypt from 'bcrypt';
 import { User } from '../../../../entities/user.entity';
 import { RoleService } from './role.service';
 
+/**
+ * Service for authenticating user in system
+ * @copyright Serdar Durdyev
+ */
 @Injectable()
 export class AuthService {
   constructor(private readonly jwtService: JwtService,
@@ -22,7 +26,7 @@ export class AuthService {
     const existedUser = await this.userService.getUserByEmail(userDto.email);
     if (existedUser) throw new HttpException('Пользователь уже зарегистрирован', HttpStatus.CONFLICT);
     const createdUser = await this.userService.createUser(userDto);
-    await this.roleService.addUserToRoleByUserId('User', createdUser.id);
+    await this.roleService.addUserToRole('User', createdUser);
     const token = this.signUser(createdUser);
     return token;
   }

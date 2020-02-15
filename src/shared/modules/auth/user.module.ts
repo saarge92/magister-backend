@@ -9,6 +9,7 @@ import { UserController } from './controllers/user.controller';
 import { RoleService } from './services/role.service';
 import { UserInRoles } from '../../../entities/user-in-roles.entity';
 import { Role } from '../../../entities/role.entity';
+import { JwtUtility } from './utilities/jwt.utility';
 
 @Global()
 @Module({
@@ -18,8 +19,10 @@ import { Role } from '../../../entities/role.entity';
   }),
     TypeOrmModule.forFeature([User, UserInRoles, Role]),
   ],
-  providers: [AuthService, UserService, RoleService],
+  providers: [AuthService, UserService, RoleService, JwtUtility,
+  ],
   controllers: [UserController],
+  exports: [AuthService, UserService, RoleService, JwtUtility, JwtModule],
 })
 export class UserModule {
 }
