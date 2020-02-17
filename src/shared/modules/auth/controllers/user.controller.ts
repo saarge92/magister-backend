@@ -2,10 +2,12 @@ import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
 import { UserDto } from '../../../dto/user.dto';
 import { AuthService } from '../services/auth.service';
 import { Response } from 'express';
+import { UserInfoDto } from '../../../dto/user-info.dto';
+import { AppGateway } from '../../../../app.gateway';
 
 @Controller('/api/user')
 export class UserController {
-  constructor(private readonly authService: AuthService) {
+  constructor(private readonly authService: AuthService, private readonly websocketServer: AppGateway) {
   }
 
   /**
@@ -15,9 +17,10 @@ export class UserController {
    */
   @Post('/register')
   public async registerUser(@Body() userDto: UserDto, @Res() response: Response) {
-    const token = await this.authService.registerUser(userDto);
+    const userInfo: UserInfoDto = await this.authService.registerUser(userDto);
+    this.websocketServer.webServer.emit('user.registered', { email: userInfo.user.email });
     return response.status(HttpStatus.OK).json({
-      token,
+      token: userInfo.token,
     });
   }
 

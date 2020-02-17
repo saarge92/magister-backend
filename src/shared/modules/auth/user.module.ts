@@ -10,6 +10,7 @@ import { RoleService } from './services/role.service';
 import { UserInRoles } from '../../../entities/user-in-roles.entity';
 import { Role } from '../../../entities/role.entity';
 import { JwtUtility } from './utilities/jwt.utility';
+import { AppGateway } from '../../../app.gateway';
 
 @Global()
 @Module({
@@ -20,6 +21,7 @@ import { JwtUtility } from './utilities/jwt.utility';
     TypeOrmModule.forFeature([User, UserInRoles, Role]),
   ],
   providers: [AuthService, UserService, RoleService, JwtUtility,
+    AppGateway,
   ],
   controllers: [UserController],
   exports: [AuthService, UserService, RoleService, JwtUtility, JwtModule],

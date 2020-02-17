@@ -5,6 +5,7 @@ import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
 import { User } from '../../../../entities/user.entity';
 import { RoleService } from './role.service';
+import { UserInfoDto } from '../../../dto/user-info.dto';
 
 /**
  * Service for authenticating user in system
@@ -22,13 +23,16 @@ export class AuthService {
    * Register User in database
    * @param userDto Object with parameters about users
    */
-  public async registerUser(userDto: UserDto): Promise<string> {
+  public async registerUser(userDto: UserDto): Promise<UserInfoDto> {
     const existedUser = await this.userService.getUserByEmail(userDto.email);
     if (existedUser) throw new HttpException('Пользователь уже зарегистрирован', HttpStatus.CONFLICT);
     const createdUser = await this.userService.createUser(userDto);
     await this.roleService.addUserToRole('User', createdUser);
     const token = this.signUser(createdUser);
-    return token;
+    return {
+      token,
+      user: createdUser,
+    };
   }
 
   /**
