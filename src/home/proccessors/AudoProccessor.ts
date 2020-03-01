@@ -10,12 +10,13 @@ export class AudioConsumer {
   @Process('audio-create')
   async saveAudio(job: Job<any>) {
     const data = job.data;
-    const pathForSave = 'public/music/' + Date.now() + '.mp3';
+    const pathForSave = 'public/music/' +
+      this.fileService.generateFileName(data.fileSave.originalname);
     await this.fileService.saveFile(pathForSave, data.fileSave);
   }
 
   @OnQueueFailed()
-  onFailed(job: Job, err: Error) {
+  async handler(job: Job, err: Error) {
     console.log(err);
   }
 }

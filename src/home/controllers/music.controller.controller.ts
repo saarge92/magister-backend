@@ -1,10 +1,21 @@
-import { Body, Controller, Get, HttpStatus, Post, Req, Res, UploadedFile, UseInterceptors } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpException,
+  HttpStatus,
+  Post,
+  Req,
+  Res,
+  UploadedFile,
+  UseInterceptors,
+} from '@nestjs/common';
 import { Request, Response } from 'express';
 import * as fs from 'fs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MusicService } from '../services/MusicService';
 
-@Controller('music')
+@Controller('api/music')
 export class MusicControllerController {
 
   constructor(private readonly musicService: MusicService) {
@@ -53,25 +64,17 @@ export class MusicControllerController {
    */
   @Post('/')
   @UseInterceptors(FileInterceptor('file', {
-    fileFilter: this.fileFilter,
+    fileFilter(req: any, file: any, callback: Function) {
+      if (!file.originalname.match(/\.(mp3|mpeg)$/)) {
+        return callback(new HttpException('Доступны только аудиофайлы', HttpStatus.BAD_REQUEST), false);
+      }
+      return callback(null, true);
+    },
   }))
   public async postMusic(@Body()createMusicDto, @UploadedFile()file, @Req() request: Request, @Res() response: Response) {
     const createdMusic = await this.musicService.postMusic(createMusicDto, file);
     return response.status(HttpStatus.OK).json({
       id: createdMusic.id,
     });
-  }
-
-  /**
-   * Validation file function
-   * @param req Request instance
-   * @param file File posted by client
-   * @param callback Callback if file is valid
-   */
-  private fileFilter(req: Request, file, callback: Function) {
-    if (!file.originalname.match(/\.(mp3|mpeg)$/)) {
-      return callback(new Error('Доступны только изображения'), false);
-    }
-    callback(null, true);
   }
 }

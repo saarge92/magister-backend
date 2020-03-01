@@ -5,6 +5,7 @@ import { Music } from '../../entities/music.entity';
 import { Repository } from 'typeorm';
 import { InjectQueue } from '@nestjs/bull';
 import { Queue } from 'bull';
+import { FileService } from '../../shared/services/file.service';
 
 /**
  * Service for working with music
@@ -13,7 +14,7 @@ import { Queue } from 'bull';
 @Injectable()
 export class MusicService {
   constructor(@InjectRepository(Music) private readonly musicRepository: Repository<Music>,
-              @InjectQueue('audio') private readonly audioQueue: Queue) {
+              @InjectQueue('audio') private readonly audioQueue: Queue, private readonly fileService: FileService) {
   }
 
   /**
@@ -30,6 +31,7 @@ export class MusicService {
       music: createdMusic,
     }, {
       attempts: 1,
+      delay: 3000,
     });
     return createdMusic;
   }
