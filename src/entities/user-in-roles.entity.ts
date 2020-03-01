@@ -16,7 +16,7 @@ export class UserInRoles {
   @PrimaryColumn('varchar', { length: 250 })
   public id: string;
 
-  @ManyToOne(type => User, { onDelete: 'NO ACTION', onUpdate: 'CASCADE' })
+  @ManyToOne(type => User, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
   // @JoinColumn({ name: 'userId', referencedColumnName: 'id' })
   public user: User;
 

@@ -3,29 +3,27 @@ import { Reflector } from '@nestjs/core';
 import { JwtUtility } from '../shared/modules/auth/utilities/jwt.utility';
 import { RoleService } from '../shared/modules/auth/services/role.service';
 import { User } from '../entities/user.entity';
+import { WsException } from '@nestjs/websockets';
 
 @Injectable()
-export class RolesGuard implements CanActivate {
+export class RolesWebSocketGuard implements CanActivate {
   constructor(private readonly reflector: Reflector,
               private readonly jwtUtility: JwtUtility,
               private readonly roleService: RoleService,
   ) {
   }
 
-  /**
-   * Logic of passing execution request
-   * @param context
-   */
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const roles: string[] = this.reflector.get<string[]>('roles', context.getHandler());
     if (!roles) {
       return false;
     }
-    const request = context.switchToHttp().getRequest();
-    if (!request.headers.authorization) return false;
+    const request = context.switchToWs().getClient();
+    if (!request.headers.authorization) throw new WsException('Укуренные дети 90х');
+    ;
     const user = await this.jwtUtility.getUserFromTokenHeader(request.headers.authorization);
     if (!user) {
-      return false;
+      throw new WsException('Укуренные дети 90х');
     }
     return await this.validateRoles(roles, user);
   }

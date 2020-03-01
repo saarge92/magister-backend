@@ -20,9 +20,24 @@ export class FileService {
     filestream.end();
   }
 
+  /**
+   * Delete file
+   * @param path Path for delete file
+   */
   public async deleteFile(path: string) {
     const pathForDelete = 'src/' + path;
     await fileSystem.unlink(pathForDelete, (error) => {
     });
+  }
+
+  /**
+   * Generate unqiue filename
+   * @param fileName Filename for generation
+   */
+  public generateFileName(fileName: string): string {
+    const lastIndexOfExtension = fileName.lastIndexOf('.');
+    const nameFile = fileName.substr(0, lastIndexOfExtension) + '_' + Date.now();
+    const extension = fileName.substr(lastIndexOfExtension + 1, fileName.length + 1);
+    return nameFile + '.' + extension;
   }
 }

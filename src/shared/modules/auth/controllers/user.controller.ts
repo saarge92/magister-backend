@@ -3,11 +3,16 @@ import { UserDto } from '../../../dto/user.dto';
 import { AuthService } from '../services/auth.service';
 import { Response } from 'express';
 import { UserInfoDto } from '../../../dto/user-info.dto';
-import { AppGateway } from '../../../../app.gateway';
+import { GrantedUserGateWay } from '../../../../granted-user.gateway';
 
+/**
+ * Controller for working with users
+ * include registration & login logic of users
+ * @copyright Serdar Durdyev
+ */
 @Controller('/api/user')
 export class UserController {
-  constructor(private readonly authService: AuthService, private readonly websocketServer: AppGateway) {
+  constructor(private readonly authService: AuthService, private readonly websocketServer: GrantedUserGateWay) {
   }
 
   /**
@@ -18,7 +23,7 @@ export class UserController {
   @Post('/register')
   public async registerUser(@Body() userDto: UserDto, @Res() response: Response) {
     const userInfo: UserInfoDto = await this.authService.registerUser(userDto);
-    this.websocketServer.webServer.emit('user.registered', { email: userInfo.user.email });
+    await this.websocketServer.webServer.emit('user.registered', { email: userInfo.user.email });
     return response.status(HttpStatus.OK).json({
       token: userInfo.token,
     });

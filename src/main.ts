@@ -6,9 +6,14 @@ import 'dotenv/config';
 import * as path from 'path';
 import * as cluster from 'cluster';
 import { cpus } from 'os';
+import * as compression from "compression"
+import { RedisIoAdapter } from './adapters/RedisoIoAdapter';
 
 const cpuLength = cpus().length;
 
+/**
+ * Bootstraping application
+ */
 async function bootstrap() {
   if (cluster.isMaster) {
     for (let i = 0; i < cpuLength - 1; i++) {
@@ -21,9 +26,14 @@ async function bootstrap() {
 
 bootstrap();
 
+/**
+ * Start application with required parameters
+ */
 async function startApplication() {
   const app = await NestFactory.create<NestExpressApplication>(AppModule);
   app.useGlobalPipes(new ValidationPipe());
-  app.useStaticAssets(path.join(__dirname, '../public'));
+  app.useWebSocketAdapter(new RedisIoAdapter(app));
+  app.use(compression());
+  app.enableCors();
   await app.listen(process.env.PORT);
 }

@@ -13,9 +13,7 @@ import { ServiceCompanyEntity } from '../../entities/service.company.entity';
 import { ServiceCompanyService } from '../services/ServiceCompanyService';
 import { CreateServiceDto } from '../dto/create-service.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { Request, Response } from 'express';
-import { RolesGuard } from '../../guards/role.guard';
-import { Roles } from '../../guards/roles.decorator';
+import { Response } from 'express';
 
 @Controller('api/service')
 export class ServiceCompanyController {
@@ -29,15 +27,20 @@ export class ServiceCompanyController {
   }
 
   /**
-   * Создание сервиса в базе данных
-   * @param createServiceDto Параметры создания сервис
+   * Creating service in database
+   * @param createServiceDto Service parameters for creation
    * @param file Файл с параметрами для создания изображения
    */
   @Post('/')
   @UseInterceptors(FileInterceptor('file', {
-    fileFilter: this.fileFilter,
+    fileFilter: (req: any, file: any, callback: Function) => {
+      if (!file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+        return callback(new HttpException('Разрешены только изображение', HttpStatus.BAD_REQUEST), false);
+      }
+      return callback(null, true);
+    },
   }))
-  public async createService(@Body() createServiceDto: CreateServiceDto, @UploadedFile() file) {
+  public async createService(@UploadedFile() file, @Body() createServiceDto: CreateServiceDto) {
     if (!file) {
       throw new HttpException('Укажите файл', 409);
     }
@@ -45,30 +48,34 @@ export class ServiceCompanyController {
     return createdService;
   }
 
+  /**
+   * Patch service by id
+   * @param id Id of edited service of company
+   * @param updateServiceDto Data transfer object about changing service
+   * @param file Sended image for service
+   */
   @Patch('/:id')
   @UseInterceptors(FileInterceptor('file', {
-    fileFilter: this.fileFilter,
+    fileFilter: (req: any, file: any, callback: Function) => {
+      if (!file.mimetype.match(/\/(jpg|jpeg|png|gif)$/)) {
+        return callback(new HttpException('Разрешены только изображение', HttpStatus.BAD_REQUEST), false);
+      }
+      return callback(null, true);
+    },
   }))
   public async updateService(@Param('id')id: string, @Body() updateServiceDto: CreateServiceDto, @UploadedFile()file): Promise<ServiceCompanyEntity> {
     return await this.serviceCompanyService.updateService(id, updateServiceDto, file);
   }
 
   /**
-   * Validation file function
-   * @param req
-   * @param file
-   * @param callback
+   * Delete service for file
+   * @param id Id of deleting service
+   * @param response Response when service is deleted
    */
-  private fileFilter(req: Request, file, callback: Function) {
-    if (!file.originalname.match(/\.(jpg|jpeg|png|gif)$/)) {
-      return callback(new Error('Доступны только изображения'), false);
-    }
-    callback(null, true);
-  }
-
   @Delete('/:id')
   public async deleteService(@Param('id')id: string, @Res() response: Response) {
     await this.serviceCompanyService.deleteService(id);
     response.status(HttpStatus.OK).json({ message: 'Успешно удаленно' });
   }
+
 }

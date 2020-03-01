@@ -65,10 +65,7 @@ export class ServiceCompanyService {
    * @param fileName Name of new image file
    */
   private generateServiceImageFileName(fileName: string): string {
-    const splittedNames: string[] = fileName.split('.');
-    const randomNameFile = splittedNames[0] + '_' + Date.now();
-    const relatedPath = 'public/services/' + randomNameFile + '.' + splittedNames[1];
-    return relatedPath;
+    return 'public/services/' + this.fileService.generateFileName(fileName);
   }
 
   /**

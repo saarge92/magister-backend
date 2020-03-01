@@ -9,6 +9,10 @@ export class JwtUtility {
   constructor(private readonly jwtService: JwtService, private readonly userService: UserService) {
   }
 
+  /**
+   * Get token string from Bearer token info
+   * @param header Header info with bearer token
+   */
   public getTokenFromHeaderString(header: string) {
     const splittedToken: string[] = header.split(' ');
     if (splittedToken.length < 2) throw new HttpException('Не правильно указан токен', HttpStatus.FORBIDDEN);
@@ -16,8 +20,21 @@ export class JwtUtility {
     return splittedToken[1];
   }
 
-  public async getUserFromToken(tokenFromHeader: string): Promise<User> {
+  /**
+   * Get user from token bearer info
+   * @param tokenFromHeader Bearer token from header
+   */
+  public async getUserFromTokenHeader(tokenFromHeader: string): Promise<User> {
     const token = this.getTokenFromHeaderString(tokenFromHeader);
+    return await this.getUserFromToken(token);
+  }
+
+  /**
+   * Get user from token
+   * @param token token string
+   * @return {Promise<User>} async object with user
+   */
+  public async getUserFromToken(token: string): Promise<User> {
     try {
       const decodedData = await this.jwtService.verifyAsync(token);
       return await this.userService.getUserByEmail(decodedData.email);
