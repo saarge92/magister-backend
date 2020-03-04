@@ -10,6 +10,7 @@ import { MusicService } from './services/MusicService';
 import { Music } from '../entities/music.entity';
 import { BullModule } from '@nestjs/bull';
 import { AudioConsumer } from './proccessors/AudoProccessor';
+import { MusicFileService } from './services/MusicFileService';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ServiceCompanyEntity, Music]), UserModule,
@@ -26,7 +27,7 @@ import { AudioConsumer } from './proccessors/AudoProccessor';
     ),
   ],
   controllers: [ServiceCompanyController, MusicControllerController],
-  providers: [ServiceCompanyService, FileService, MusicService, AudioConsumer],
+  providers: [ServiceCompanyService, FileService, MusicService, AudioConsumer, MusicFileService],
 })
 export class HomeModule {
 }

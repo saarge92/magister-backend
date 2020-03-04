@@ -3,7 +3,7 @@ import {
   Controller,
   Get,
   HttpException,
-  HttpStatus,
+  HttpStatus, Param,
   Post,
   Req,
   Res,
@@ -21,39 +21,22 @@ export class MusicControllerController {
   constructor(private readonly musicService: MusicService) {
   }
 
-  @Get('/')
-  public async getMusic(@Req() request: Request, @Res() response: Response) {
-    let readStream = null;
-    const filePath = 'src/public/music/might notf.mp3';
-    let stat = fs.statSync(filePath);
-    let range = request.headers.range;
-    if (range !== undefined) {
-      let parts = range.replace(/bytes=/, '').split('-');
-      let partial_start = parts[0];
-      let partial_end = parts[1];
-
-      if ((isNaN(parseInt(partial_start)) && partial_start.length > 1) || (isNaN(parseInt(partial_end)) && partial_end.length > 1)) {
-        return response.sendStatus(500);
-      }
-      var start = parseInt(partial_start, 10);
-      var end = partial_end ? parseInt(partial_end, 10) : stat.size - 1;
-      var content_length = (end - start) + 1;
-
-      response.status(206).header({
+  @Get('/:id')
+  public async getMusic(@Param('id') id: string, @Res() response: Response, @Req() request: Request) {
+    const musicStreamData = await this.musicService.getMusicById(id, request.headers.range);
+    if (request.headers.range !== undefined) {
+      response.status(HttpStatus.PARTIAL_CONTENT).header({
         'Content-Type': 'audio/mpeg',
-        'Content-Length': content_length,
-        'Content-Range': 'bytes ' + start + '-' + end + '/' + stat.size,
+        'Content-Length': musicStreamData.sizeRead,
+        'Content-Range': 'bytes ' + musicStreamData.start + '-' + musicStreamData.end + '/' + musicStreamData.sizeRead,
       });
-
-      readStream = fs.createReadStream(filePath, { start: start, end: end });
     } else {
       response.header({
         'Content-Type': 'audio/mpeg',
-        'Content-Length': stat.size,
+        'Content-Length': musicStreamData.sizeRead,
       });
-      readStream = fs.createReadStream(filePath);
     }
-    readStream.pipe(response);
+    musicStreamData.dataStream.pipe(response);
   }
 
   /**

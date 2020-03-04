@@ -18,6 +18,9 @@ export class Music {
   @Column({ name: 'name', nullable: false, length: 255 })
   public name: string;
 
+  @Column({ name: 'path', nullable: true, length: 255 })
+  public fileName: string;
+
   @CreateDateColumn({ name: 'created_date' })
   // tslint:disable-next-line:variable-name
   public created_date: Date;
