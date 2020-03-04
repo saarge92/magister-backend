@@ -40,6 +40,14 @@ describe('User Service test', () => {
     expect(createdUser instanceof User).toBe(true);
   });
 
+  it('Get user by email should return user', async () => {
+    const randomUser = await userRepositoryMock.createQueryBuilder()
+      .orderBy('RAND()').getOne();
+    const expectedUser = await userService.getUserByEmail(randomUser.email);
+    expect(expectedUser).toBeDefined();
+    expect(expectedUser.email).toBe(randomUser.email);
+  });
+
   afterEach(async () => {
     await getConnection(connectionName).close();
   });
