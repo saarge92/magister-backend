@@ -29,7 +29,8 @@
     ],
     "arrow-parens": false,
     "object-literal-sort-keys": false,
-    "curly": false
+    "curly": false,
+    "array-type": true
   },
   "rulesDirectory": []
 }
