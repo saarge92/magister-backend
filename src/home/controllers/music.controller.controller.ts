@@ -11,16 +11,25 @@ import {
   UseInterceptors,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
-import * as fs from 'fs';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MusicService } from '../services/MusicService';
 
+/**
+ * Controller for serving requests for music data
+ * @copyright Serdar Durdyev
+ */
 @Controller('api/music')
 export class MusicControllerController {
 
   constructor(private readonly musicService: MusicService) {
   }
 
+  /**
+   * Get stream of music by id of music
+   * @param id Id music in database
+   * @param response Response for client
+   * @param request Request data
+   */
   @Get('/:id')
   public async getMusic(@Param('id') id: string, @Res() response: Response, @Req() request: Request) {
     const musicStreamData = await this.musicService.getMusicById(id, request.headers.range);
