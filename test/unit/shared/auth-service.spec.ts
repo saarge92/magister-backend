@@ -5,6 +5,8 @@ import { UserModule } from '../../../src/shared/modules/auth/user.module';
 import * as fakerStatic from 'faker';
 import { UserDto } from '../../../src/shared/dto/user.dto';
 import { connectionParameters } from '../../connections/connection';
+import { getRepository, Repository } from 'typeorm';
+import { User } from '../../../src/entities/user.entity';
 
 
 /**
@@ -12,6 +14,7 @@ import { connectionParameters } from '../../connections/connection';
  */
 describe('Auth service test', () => {
   let authService: AuthService;
+  let userRepository: Repository<User>;
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
@@ -23,6 +26,7 @@ describe('Auth service test', () => {
       ],
     }).compile();
     authService = module.get<AuthService>(AuthService);
+    userRepository = getRepository(User);
   });
 
   /**
@@ -37,5 +41,17 @@ describe('Auth service test', () => {
     const registeredUserInfo = await authService.registerUser(randomUserDto);
     expect(registeredUserInfo).toBeDefined();
     expect(registeredUserInfo).toHaveProperty('token');
+  });
+
+  /**
+   * Test sign user by user instance
+   */
+  it('sign user and should return string', async () => {
+    expect(userRepository).toBeDefined();
+    const random = await userRepository.createQueryBuilder()
+      .orderBy('RAND()').getOne();
+    const signResult = authService.signUser(random);
+    expect(signResult).toBeDefined();
+    expect(typeof signResult).toBe('string');
   });
 });
