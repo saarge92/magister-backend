@@ -11,6 +11,7 @@ import { UserInRoles } from '../../../entities/user-in-roles.entity';
 import { Role } from '../../../entities/role.entity';
 import { JwtUtility } from './utilities/jwt.utility';
 import { GrantedUserGateWay } from '../../../granted-user.gateway';
+import { LocalGuard } from '../../../guards/local.guard';
 
 @Global()
 @Module({
@@ -21,7 +22,7 @@ import { GrantedUserGateWay } from '../../../granted-user.gateway';
     TypeOrmModule.forFeature([User, UserInRoles, Role]),
   ],
   providers: [AuthService, UserService, RoleService, JwtUtility,
-    GrantedUserGateWay,
+    GrantedUserGateWay, LocalGuard,
   ],
   controllers: [UserController],
   exports: [AuthService, UserService, RoleService, JwtUtility, JwtModule],

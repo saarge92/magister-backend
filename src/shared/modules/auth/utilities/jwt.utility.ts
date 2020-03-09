@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import 'dotenv/config';
 import { User } from '../../../../entities/user.entity';
@@ -14,7 +14,8 @@ export class JwtUtility {
    * @param header Header info with bearer token
    */
   public getTokenFromHeaderString(header: string) {
-    const splittedToken: string[] = header.split(' ');
+    if (header === undefined) throw new UnauthorizedException('Токен не указан');
+    const splittedToken: Array<string> = header.split(' ');
     if (splittedToken.length < 2) throw new HttpException('Не правильно указан токен', HttpStatus.FORBIDDEN);
     if (splittedToken[0] !== 'Bearer') throw new HttpException('Не правильно указан токен', HttpStatus.FORBIDDEN);
     return splittedToken[1];

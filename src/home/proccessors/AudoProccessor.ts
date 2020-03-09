@@ -5,6 +5,11 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Music } from '../../entities/music.entity';
 import { Repository } from 'typeorm';
 
+/**
+ * Proccessor which serve
+ * saving audio file in redis queue
+ * @copyright Serdar Durdyev
+ */
 @Processor('audio')
 export class AudioConsumer {
   constructor(private readonly fileService: FileService, @InjectRepository(Music) private readonly musicRepository: Repository<Music>) {
@@ -22,7 +27,7 @@ export class AudioConsumer {
 
   @OnQueueFailed()
   async handler(job: Job, err: Error) {
-    console.log(err);
+    await this.musicRepository.delete(job.data.music.id);
   }
 }
 

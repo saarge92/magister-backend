@@ -9,6 +9,7 @@ import { FileService } from '../../shared/services/file.service';
 import * as fs from 'fs';
 import { MusicDataDto } from '../dto/MusicDataDto';
 import { MusicFileService } from './MusicFileService';
+import { User } from '../../entities/user.entity';
 
 /**
  * Service for working with music
@@ -26,9 +27,10 @@ export class MusicService {
    * @param musicDto Data about music creation
    * @param file Created file
    */
-  public async postMusic(musicDto: CreateMusicDto, file: any): Promise<Music> {
+  public async postMusic(musicDto: CreateMusicDto, file: any, currentUser: User): Promise<Music> {
     const createdMusic = this.musicRepository.create();
     createdMusic.name = musicDto.name;
+    createdMusic.user_id = currentUser.id;
     await this.musicRepository.save(createdMusic);
 
     await this.audioQueue.add('audio-create', {
@@ -49,7 +51,6 @@ export class MusicService {
   public async getMusicById(id: string, range?: string): Promise<MusicDataDto> {
 
     const music = await this.musicRepository.findOne(id);
-
     if (!music) throw new HttpException('Аудио файл не найден', HttpStatus.BAD_REQUEST);
     if (!music.fileName) throw new HttpException('Путь к файлу не задан', HttpStatus.BAD_REQUEST);
 

@@ -33,6 +33,9 @@ export class Music {
   @JoinColumn({ name: 'user_id' })
   public user: User;
 
+  @Column({ name: 'user_id', type: 'varchar', nullable: true })
+  public user_id: string;
+
   @BeforeInsert()
   public beforeInsert() {
     this.created_date = new Date();

@@ -30,7 +30,10 @@
     "arrow-parens": false,
     "object-literal-sort-keys": false,
     "curly": false,
-    "array-type": true
+    "array-type": [
+      true,
+      "generic"
+    ]
   },
   "rulesDirectory": []
 }
