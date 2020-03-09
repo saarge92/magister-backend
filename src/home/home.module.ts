@@ -11,9 +11,12 @@ import { Music } from '../entities/music.entity';
 import { BullModule } from '@nestjs/bull';
 import { AudioConsumer } from './proccessors/AudoProccessor';
 import { MusicFileService } from './services/MusicFileService';
+import { OrderController } from './controllers/order.controller';
+import { OrderEntity } from '../entities/order.entity';
+import { OrderService } from './services/OrderService';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ServiceCompanyEntity, Music]), UserModule,
+  imports: [TypeOrmModule.forFeature([ServiceCompanyEntity, Music, OrderEntity]), UserModule,
     BullModule.registerQueueAsync(
       {
         name: 'audio',
@@ -26,8 +29,8 @@ import { MusicFileService } from './services/MusicFileService';
       },
     ),
   ],
-  controllers: [ServiceCompanyController, MusicControllerController],
-  providers: [ServiceCompanyService, FileService, MusicService, AudioConsumer, MusicFileService],
+  controllers: [ServiceCompanyController, MusicControllerController, OrderController],
+  providers: [ServiceCompanyService, FileService, MusicService, AudioConsumer, MusicFileService, OrderService],
 })
 export class HomeModule {
 }

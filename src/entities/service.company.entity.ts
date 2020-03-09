@@ -22,6 +22,9 @@ export class ServiceCompanyEntity {
   @Column({ type: 'varchar', name: 'image_path', nullable: false })
   public image_path: string;
 
+  @Column({ name: 'price', type: 'double', nullable: false, default: 1 })
+  public price: number;
+
   @CreateDateColumn({ name: 'created_date' })
   // tslint:disable-next-line:variable-name
   public created_date: Date;
