@@ -14,7 +14,6 @@ import { Request, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { MusicService } from '../services/MusicService';
 import { LocalGuard } from '../../guards/local.guard';
-import { CurrentUser } from '../../../dist/shared/current-user.decorator';
 import { User } from '../../entities/user.entity';
 
 /**
