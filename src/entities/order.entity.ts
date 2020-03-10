@@ -30,6 +30,12 @@ export class OrderEntity {
   @Column({ name: 'user_id', type: 'varchar', nullable: true })
   public user_id: string;
 
+  @Column({ name: 'total_qty', type: 'int', nullable: false })
+  public total_qty: number;
+
+  @Column({ name: 'total_sum', type: 'double', nullable: false })
+  public total_price: number;
+
   @CreateDateColumn({ name: 'created_date' })
   // tslint:disable-next-line:variable-name
   public created_date: Date;

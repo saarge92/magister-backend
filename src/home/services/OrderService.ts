@@ -29,6 +29,8 @@ export class OrderService {
     const selectedServices: Array<ServiceCompanyEntity> = validatedServiceInfo[1];
 
     let index = 0;
+    let totalQty: number = 0;
+    let totalSum: number = 0;
     const infoOrder: Array<any> = [];
     for (const order of orderInfo.info) {
       const item = {
@@ -37,11 +39,15 @@ export class OrderService {
         sum: order.quantity * selectedServices[index].price,
       };
       infoOrder.push(item);
+      totalQty += order.quantity;
+      totalSum += item.sum;
       index++;
     }
     const newOrder = this.orderRepository.create();
     newOrder.user_id = currentUserId;
     newOrder.info_order = JSON.stringify(infoOrder);
+    newOrder.total_qty = totalQty;
+    newOrder.total_price = totalSum;
     await this.orderRepository.save(newOrder);
     return true;
   }
