@@ -14,7 +14,7 @@ import { User } from './user.entity';
  * Entity for saving data about order request
  * @copyright Serdar Durdyev
  */
-@Entity({ name: 'order' })
+@Entity({ name: 'orders' })
 export class OrderEntity {
   @PrimaryGeneratedColumn('uuid')
   @PrimaryColumn({ type: 'varchar', length: 250 })
