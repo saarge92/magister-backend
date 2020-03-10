@@ -27,7 +27,17 @@ export class OrderService {
     const validatedServiceInfo: [boolean, Array<ServiceCompanyEntity>] = await this.validateServices(orderInfo);
     if (!validatedServiceInfo[0]) throw new BadRequestException('Данные заказы не верны. Возможно указанная услуга отсутсвует в базе');
     const selectedServices: Array<ServiceCompanyEntity> = validatedServiceInfo[1];
+    await this.createOrder(orderInfo, selectedServices, currentUserId);
+    return true;
+  }
 
+  /**
+   * Partial function for saving data about order
+   * @param orderInfo Data from post body request
+   * @param selectedServices Services which has been passed validation
+   * @param currentUserId Current user which performs the operation
+   */
+  private async createOrder(orderInfo: BodyInfoDto, selectedServices: Array<ServiceCompanyEntity>, currentUserId: string): Promise<void> {
     let index = 0;
     let totalQty: number = 0;
     let totalSum: number = 0;
@@ -49,7 +59,6 @@ export class OrderService {
     newOrder.total_qty = totalQty;
     newOrder.total_price = totalSum;
     await this.orderRepository.save(newOrder);
-    return true;
   }
 
   /**
