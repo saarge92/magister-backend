@@ -7,10 +7,11 @@ export class serviceCompanyCreate1581411650164 implements MigrationInterface {
     await queryRunner.query(
       `CREATE TABLE \`company_services\` (
   \`name\` varchar(255) NOT NULL,
+  \`image_path\` varchar(255) NOT NULL,
   \`created_date\` datetime(6) NOT NULL DEFAULT current_timestamp(6),
   \`updated_date\` datetime(6) NOT NULL DEFAULT current_timestamp(6),
-  \`id\` varchar(36) NOT NULL,
-  \`image_path\` varchar(255) NOT NULL
+  \`id\` varchar(250) NOT NULL,
+  \`price\` double NOT NULL DEFAULT 1
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;`,
     );
   }
