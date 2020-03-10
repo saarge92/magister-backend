@@ -23,7 +23,7 @@ export class OrderEntity {
   @Column({ name: 'info_order', type: 'varchar', length: 255, nullable: false })
   public info_order: string;
 
-  @ManyToOne(type => User, { onDelete: 'SET NULL', onUpdate: 'CASCADE' })
+  @ManyToOne(type => User, { onDelete: 'SET NULL', onUpdate: 'CASCADE', lazy: true })
   @JoinColumn({ name: 'user_id' })
   public user: User;
 

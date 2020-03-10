@@ -14,9 +14,10 @@ import { MusicFileService } from './services/MusicFileService';
 import { OrderController } from './controllers/order.controller';
 import { OrderEntity } from '../entities/order.entity';
 import { OrderService } from './services/OrderService';
+import { User } from '../entities/user.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([ServiceCompanyEntity, Music, OrderEntity]), UserModule,
+  imports: [TypeOrmModule.forFeature([ServiceCompanyEntity, Music, OrderEntity, User]), UserModule,
     BullModule.registerQueueAsync(
       {
         name: 'audio',

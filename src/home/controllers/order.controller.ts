@@ -1,7 +1,7 @@
 import {
   Body,
-  Controller,
-  HttpStatus,
+  Controller, Get,
+  HttpStatus, Param,
   Post,
   Req,
   Res,
@@ -32,12 +32,34 @@ export class OrderController {
   @UseGuards(LocalGuard)
   public async serveOrder(@Body() orderInfo: BodyInfoDto, @Res() response: Response,
                           @Req() request: Request) {
-    const isSaved = await this.orderService.registerOrder(orderInfo, (request.user as User).id);
-    if (isSaved) response.status(HttpStatus.OK).json({
+    const savedOrder = await this.orderService.registerOrder(orderInfo, (request.user as User).id);
+    if (savedOrder) response.status(HttpStatus.OK).json({
       message: 'Шаблон обработан',
+      id: savedOrder.id,
     });
     else response.status(HttpStatus.BAD_REQUEST).json({
       message: 'Что-то пошло не так! Обратитесь к админстратору',
     });
+  }
+
+  /**
+   * Get common information about order
+   * The result will not include specific user information
+   * in particular order
+   *
+   * @param id Id of order
+   */
+  @Get('common/:id/')
+  public async getCommonInfoOrderById(@Param('id') id: string) {
+    return await this.orderService.getOrderById(id);
+  }
+
+  /**
+   * Get detailed info about order by id
+   * @param id Id of requested order
+   */
+  @Get('detail/:id')
+  public async getDetailedInfoById(@Param('id') id: string) {
+    return await this.orderService.getOrderDetailedInfo(id);
   }
 }

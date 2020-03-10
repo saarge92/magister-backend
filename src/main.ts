@@ -3,7 +3,6 @@ import { AppModule } from './app.module';
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import 'dotenv/config';
-import * as path from 'path';
 import * as cluster from 'cluster';
 import { cpus } from 'os';
 import * as compression from "compression"
