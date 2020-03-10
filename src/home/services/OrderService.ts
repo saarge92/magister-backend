@@ -65,14 +65,10 @@ export class OrderService {
    * Validate posted service info
    * @param orderInfoDto Info
    */
-  private async validateServices(
-    orderInfoDto: BodyInfoDto,
-  ): Promise<[boolean, Array<ServiceCompanyEntity>]> {
+  private async validateServices(orderInfoDto: BodyInfoDto): Promise<[boolean, Array<ServiceCompanyEntity>]> {
     const selectedServices: Array<ServiceCompanyEntity> = [];
     for (const service of orderInfoDto.info) {
-      const existedService = await this.serviceCompanyRepository.findOne(
-        service.idService,
-      );
+      const existedService = await this.serviceCompanyRepository.findOne(service.idService);
       if (!existedService) {
         break;
         return [false, null];
