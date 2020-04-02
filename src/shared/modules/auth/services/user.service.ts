@@ -4,13 +4,14 @@ import { UserDto } from '../../../dto/user.dto';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import * as bcrypt from 'bcrypt';
+import { IUserService } from '../interfaces/i-user-service';
 
 /**
  * Service for bussines logic of users entity
  * @copyright Serdar Durdyev
  */
 @Injectable()
-export class UserService {
+export class UserService implements IUserService {
   private saltRounds: number = 10;
 
   constructor(@InjectRepository(User) private readonly userRepository: Repository<User>) {

@@ -4,7 +4,6 @@ import 'dotenv/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../../../entities/user.entity';
 import { AuthService } from './services/auth.service';
-import { UserService } from './services/user.service';
 import { UserController } from './controllers/user.controller';
 import { RoleService } from './services/role.service';
 import { UserInRoles } from '../../../entities/user-in-roles.entity';
@@ -12,6 +11,7 @@ import { Role } from '../../../entities/role.entity';
 import { JwtUtility } from './utilities/jwt.utility';
 import { GrantedUserGateWay } from '../../../granted-user.gateway';
 import { LocalGuard } from '../../../guards/local.guard';
+import { AuthModuleProvider } from './providers/auth-module-provider';
 
 @Global()
 @Module({
@@ -19,13 +19,13 @@ import { LocalGuard } from '../../../guards/local.guard';
     secret: process.env.JWT_KEY,
     signOptions: { expiresIn: '2h', issuer: 'dmasters' },
   }),
-    TypeOrmModule.forFeature([User, UserInRoles, Role]),
+  TypeOrmModule.forFeature([User, UserInRoles, Role]),
   ],
-  providers: [AuthService, UserService, RoleService, JwtUtility,
+  providers: [...AuthModuleProvider, AuthService, RoleService, JwtUtility,
     GrantedUserGateWay, LocalGuard,
   ],
   controllers: [UserController],
-  exports: [AuthService, UserService, RoleService, JwtUtility, JwtModule],
+  exports: [...AuthModuleProvider, AuthService, RoleService, JwtUtility, JwtModule],
 })
 export class UserModule {
 }

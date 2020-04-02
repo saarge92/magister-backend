@@ -1,0 +1,29 @@
+version: '3.1'
+
+services:
+  main:
+    container_name: main
+    build:
+      context: .
+      dockerfile: DockerFile
+      args:
+        - NODE_ENV = development
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    ports:
+      - 3000:3000
+      - 9229:9229
+
+
+  mysql:
+    image: mysql
+    restart: always
+    env_file:
+      - ./mysql-docker.env
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080

@@ -1,12 +1,14 @@
-import { HttpException, HttpStatus, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UnauthorizedException, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import 'dotenv/config';
 import { User } from '../../../../entities/user.entity';
-import { UserService } from '../services/user.service';
+import { USER_SERVICE_DEPENDENCY } from '../constants/auth-module-constants';
+import { IUserService } from '../interfaces/i-user-service';
 
 @Injectable()
 export class JwtUtility {
-  constructor(private readonly jwtService: JwtService, private readonly userService: UserService) {
+  constructor(private readonly jwtService: JwtService,
+    @Inject(USER_SERVICE_DEPENDENCY) private readonly userService: IUserService) {
   }
 
   /**

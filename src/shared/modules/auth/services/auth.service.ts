@@ -1,11 +1,12 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, Inject } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { UserDto } from '../../../dto/user.dto';
-import { UserService } from './user.service';
 import * as bcrypt from 'bcrypt';
 import { User } from '../../../../entities/user.entity';
 import { RoleService } from './role.service';
 import { UserInfoDto } from '../../../dto/user-info.dto';
+import { USER_SERVICE_DEPENDENCY } from '../constants/auth-module-constants';
+import { IUserService } from '../interfaces/i-user-service';
 
 /**
  * Service for authenticating user in system
@@ -14,8 +15,8 @@ import { UserInfoDto } from '../../../dto/user-info.dto';
 @Injectable()
 export class AuthService {
   constructor(private readonly jwtService: JwtService,
-              private readonly userService: UserService,
-              private readonly roleService: RoleService,
+    @Inject(USER_SERVICE_DEPENDENCY) private readonly userService: IUserService,
+    private readonly roleService: RoleService,
   ) {
   }
 
