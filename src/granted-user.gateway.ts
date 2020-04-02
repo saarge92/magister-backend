@@ -1,15 +1,16 @@
 import { WebSocketServer, OnGatewayConnection, SubscribeMessage, WebSocketGateway } from '@nestjs/websockets';
-import { UseGuards } from '@nestjs/common';
-import { RolesWebSocketGuard } from './guards/role.guard.websocket';
 import { JwtUtility } from './shared/modules/auth/utilities/jwt.utility';
-import { RoleService } from './shared/modules/auth/services/role.service';
+import { IRoleService } from './shared/modules/auth/interfaces/i-role-service';
+import { ROLE_SERVICE_DEPENDENCY } from './shared/modules/auth/constants/auth-module-constants';
+import { Inject } from '@nestjs/common';
 
 /**
  * Websocket gateway for admin users only
  */
 @WebSocketGateway(3001, { namespace: 'admin' })
 export class GrantedUserGateWay implements OnGatewayConnection {
-  constructor(private readonly jwtUtility: JwtUtility, private readonly userInRoleService: RoleService) {
+  constructor(private readonly jwtUtility: JwtUtility,
+    @Inject(ROLE_SERVICE_DEPENDENCY) private readonly userInRoleService: IRoleService) {
   }
 
   /**

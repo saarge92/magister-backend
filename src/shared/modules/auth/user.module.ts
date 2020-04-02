@@ -21,11 +21,11 @@ import { AuthModuleProvider } from './providers/auth-module-provider';
   }),
   TypeOrmModule.forFeature([User, UserInRoles, Role]),
   ],
-  providers: [...AuthModuleProvider, AuthService, RoleService, JwtUtility,
+  providers: [...AuthModuleProvider, AuthService, JwtUtility,
     GrantedUserGateWay, LocalGuard,
   ],
   controllers: [UserController],
-  exports: [...AuthModuleProvider, AuthService, RoleService, JwtUtility, JwtModule],
+  exports: [...AuthModuleProvider, AuthService, JwtUtility, JwtModule],
 })
 export class UserModule {
 }

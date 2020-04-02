@@ -3,10 +3,10 @@ import { JwtService } from '@nestjs/jwt';
 import { UserDto } from '../../../dto/user.dto';
 import * as bcrypt from 'bcrypt';
 import { User } from '../../../../entities/user.entity';
-import { RoleService } from './role.service';
 import { UserInfoDto } from '../../../dto/user-info.dto';
-import { USER_SERVICE_DEPENDENCY } from '../constants/auth-module-constants';
+import { USER_SERVICE_DEPENDENCY, ROLE_SERVICE_DEPENDENCY } from '../constants/auth-module-constants';
 import { IUserService } from '../interfaces/i-user-service';
+import { IRoleService } from '../interfaces/i-role-service';
 
 /**
  * Service for authenticating user in system
@@ -16,7 +16,7 @@ import { IUserService } from '../interfaces/i-user-service';
 export class AuthService {
   constructor(private readonly jwtService: JwtService,
     @Inject(USER_SERVICE_DEPENDENCY) private readonly userService: IUserService,
-    private readonly roleService: RoleService,
+    @Inject(ROLE_SERVICE_DEPENDENCY) private readonly roleService: IRoleService,
   ) {
   }
 

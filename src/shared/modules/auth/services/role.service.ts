@@ -4,12 +4,13 @@ import { Repository } from 'typeorm';
 import { Role } from '../../../../entities/role.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { UserInRoles } from '../../../../entities/user-in-roles.entity';
+import { IRoleService } from '../interfaces/i-role-service';
 
 @Injectable()
-export class RoleService {
+export class RoleService implements IRoleService {
   constructor(@InjectRepository(Role) private readonly roleRepository: Repository<Role>,
-              @InjectRepository(User) private readonly userRepository: Repository<User>,
-              @InjectRepository(UserInRoles) private readonly userInRolesRepository: Repository<UserInRoles>) {
+    @InjectRepository(User) private readonly userRepository: Repository<User>,
+    @InjectRepository(UserInRoles) private readonly userInRolesRepository: Repository<UserInRoles>) {
   }
 
   /**
@@ -70,7 +71,7 @@ export class RoleService {
    * @param roleId
    * @param userId
    */
-  private async recordUserInRoleExists(roleId: string, userId: string): Promise<boolean> {
+  public async recordUserInRoleExists(roleId: string, userId: string): Promise<boolean> {
     const existRecord = await this.userInRolesRepository.findOne({
       where: {
         roleId,
