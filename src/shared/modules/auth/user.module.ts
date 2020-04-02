@@ -3,9 +3,7 @@ import { JwtModule } from '@nestjs/jwt';
 import 'dotenv/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { User } from '../../../entities/user.entity';
-import { AuthService } from './services/auth.service';
 import { UserController } from './controllers/user.controller';
-import { RoleService } from './services/role.service';
 import { UserInRoles } from '../../../entities/user-in-roles.entity';
 import { Role } from '../../../entities/role.entity';
 import { JwtUtility } from './utilities/jwt.utility';
@@ -21,11 +19,11 @@ import { AuthModuleProvider } from './providers/auth-module-provider';
   }),
   TypeOrmModule.forFeature([User, UserInRoles, Role]),
   ],
-  providers: [...AuthModuleProvider, AuthService, JwtUtility,
+  providers: [...AuthModuleProvider, JwtUtility,
     GrantedUserGateWay, LocalGuard,
   ],
   controllers: [UserController],
-  exports: [...AuthModuleProvider, AuthService, JwtUtility, JwtModule],
+  exports: [...AuthModuleProvider, JwtUtility, JwtModule],
 })
 export class UserModule {
 }

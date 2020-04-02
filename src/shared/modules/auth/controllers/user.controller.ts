@@ -1,9 +1,10 @@
-import { Body, Controller, HttpStatus, Post, Res } from '@nestjs/common';
+import { Body, Controller, HttpStatus, Post, Res, Inject } from '@nestjs/common';
 import { UserDto } from '../../../dto/user.dto';
-import { AuthService } from '../services/auth.service';
 import { Response } from 'express';
 import { UserInfoDto } from '../../../dto/user-info.dto';
 import { GrantedUserGateWay } from '../../../../granted-user.gateway';
+import { AUTH_SERVICE_DEPENDENCY } from '../constants/auth-module-constants';
+import { IAuthService } from '../interfaces/i-auth-service';
 
 /**
  * Controller for working with users
@@ -12,7 +13,9 @@ import { GrantedUserGateWay } from '../../../../granted-user.gateway';
  */
 @Controller('/api/user')
 export class UserController {
-  constructor(private readonly authService: AuthService, private readonly websocketServer: GrantedUserGateWay) {
+
+  constructor(@Inject(AUTH_SERVICE_DEPENDENCY) private readonly authService: IAuthService,
+    private readonly websocketServer: GrantedUserGateWay) {
   }
 
   /**

@@ -7,13 +7,14 @@ import { UserInfoDto } from '../../../dto/user-info.dto';
 import { USER_SERVICE_DEPENDENCY, ROLE_SERVICE_DEPENDENCY } from '../constants/auth-module-constants';
 import { IUserService } from '../interfaces/i-user-service';
 import { IRoleService } from '../interfaces/i-role-service';
+import { IAuthService } from '../interfaces/i-auth-service';
 
 /**
  * Service for authenticating user in system
  * @copyright Serdar Durdyev
  */
 @Injectable()
-export class AuthService {
+export class AuthService implements IAuthService {
   constructor(private readonly jwtService: JwtService,
     @Inject(USER_SERVICE_DEPENDENCY) private readonly userService: IUserService,
     @Inject(ROLE_SERVICE_DEPENDENCY) private readonly roleService: IRoleService,
