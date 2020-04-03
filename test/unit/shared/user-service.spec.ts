@@ -6,13 +6,14 @@ import { getRepositoryToken } from '@nestjs/typeorm';
 import { connectionName, getConnectionParameters } from '../../connections/connection';
 import { UserDto } from '../../../src/shared/dto/user.dto';
 import * as fakerStatic from 'faker';
+import { IUserService } from '../../../src/shared/modules/auth/interfaces/i-user-service';
 
 /**
  * Test User Service
  * @copyright Serdar Durdyev
  */
 describe('User Service test', () => {
-  let userService: UserService;
+  let userService: IUserService;
   let userRepositoryMock: Repository<User>;
 
   beforeEach(async () => {

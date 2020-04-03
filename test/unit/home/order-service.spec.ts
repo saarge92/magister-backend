@@ -1,10 +1,10 @@
 import { Test, TestingModule } from '@nestjs/testing';
 import { UserModule } from '../../../src/shared/modules/auth/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { connectionParameters } from '../../connections/connection';
+import { connectionName, connectionParameters } from '../../connections/connection';
 import { OrderService } from '../../../src/home/services/OrderService';
 import { HomeModule } from '../../../src/home/home.module';
-import { getRepository, Repository } from 'typeorm';
+import { getConnection, getRepository, Repository } from 'typeorm';
 import { OrderEntity } from '../../../src/entities/order.entity';
 
 /**
@@ -16,7 +16,7 @@ describe('Order service test', () => {
   let orderService: OrderService;
   let orderRepository: Repository<OrderEntity>;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [HomeModule,
         TypeOrmModule.forRoot({
@@ -39,5 +39,9 @@ describe('Order service test', () => {
     const result: any = await orderService.getOrderById(randomEntity.id);
     expect(randomEntity).toBeDefined();
     expect(randomEntity.id).toBe(result.id);
+  });
+
+  afterAll(async () => {
+    getConnection(connectionName).close();
   });
 });
