@@ -1,5 +1,4 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { UserModule } from '../../../src/shared/modules/auth/user.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { connectionName, connectionParameters } from '../../connections/connection';
 import { OrderService } from '../../../src/home/services/OrderService';
