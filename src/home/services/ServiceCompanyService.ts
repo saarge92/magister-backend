@@ -3,17 +3,17 @@ import { ServiceCompanyEntity } from '../../entities/service.company.entity';
 import { Repository } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateServiceDto } from '../dto/create-service.dto';
-import * as fileSystem from 'fs';
 import { FileService } from '../../shared/services/file.service';
+import { IServiceCompanyService } from '../interfaces/i-service-company';
 
 /**
  * Service for working with entity "Service of company"
  * @author Serdar Durdyev
  */
 @Injectable()
-export class ServiceCompanyService {
+export class ServiceCompanyService implements IServiceCompanyService {
   constructor(@InjectRepository(ServiceCompanyEntity) private readonly serviceCompanyRepository: Repository<ServiceCompanyEntity>,
-              private readonly  fileService: FileService) {
+    private readonly fileService: FileService) {
   }
 
   /**

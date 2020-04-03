@@ -32,7 +32,7 @@ import { HomeProvider } from './providers/home-provider';
   ),
   ],
   controllers: [ServiceCompanyController, MusicControllerController, OrderController],
-  providers: [ServiceCompanyService, FileService, MusicService, AudioConsumer, MusicFileService, ...HomeProvider],
+  providers: [FileService, MusicService, AudioConsumer, MusicFileService, ...HomeProvider],
 })
 export class HomeModule {
 }

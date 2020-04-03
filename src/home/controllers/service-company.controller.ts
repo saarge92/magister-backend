@@ -8,16 +8,18 @@ import {
   Post, Res,
   UploadedFile, UseGuards,
   UseInterceptors,
+  Inject,
 } from '@nestjs/common';
 import { ServiceCompanyEntity } from '../../entities/service.company.entity';
-import { ServiceCompanyService } from '../services/ServiceCompanyService';
 import { CreateServiceDto } from '../dto/create-service.dto';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { Response } from 'express';
+import { SERVICE_COMPANY_SERVICE } from '../constans/home-constants';
+import { IServiceCompanyService } from '../interfaces/i-service-company';
 
 @Controller('api/service')
 export class ServiceCompanyController {
-  constructor(private readonly serviceCompanyService: ServiceCompanyService) {
+  constructor(@Inject(SERVICE_COMPANY_SERVICE) private readonly serviceCompanyService: IServiceCompanyService) {
   }
 
   @Get('/all')
@@ -63,7 +65,7 @@ export class ServiceCompanyController {
       return callback(null, true);
     },
   }))
-  public async updateService(@Param('id')id: string, @Body() updateServiceDto: CreateServiceDto, @UploadedFile()file): Promise<ServiceCompanyEntity> {
+  public async updateService(@Param('id') id: string, @Body() updateServiceDto: CreateServiceDto, @UploadedFile() file): Promise<ServiceCompanyEntity> {
     return await this.serviceCompanyService.updateService(id, updateServiceDto, file);
   }
 
@@ -73,7 +75,7 @@ export class ServiceCompanyController {
    * @param response Response when service is deleted
    */
   @Delete('/:id')
-  public async deleteService(@Param('id')id: string, @Res() response: Response) {
+  public async deleteService(@Param('id') id: string, @Res() response: Response) {
     await this.serviceCompanyService.deleteService(id);
     response.status(HttpStatus.OK).json({ message: 'Успешно удаленно' });
   }
