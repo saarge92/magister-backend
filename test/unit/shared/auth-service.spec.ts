@@ -8,8 +8,6 @@ import { connectionName, connectionParameters } from '../../connections/connecti
 import { getConnection, getRepository, Repository } from 'typeorm';
 import { User } from '../../../src/entities/user.entity';
 import { IAuthService } from '../../../src/shared/modules/auth/interfaces/i-auth-service';
-import { AuthModuleProvider } from '../../../src/shared/modules/auth/providers/auth-module-provider';
-import { UserService } from '../../../src/shared/modules/auth/services/user.service';
 import { UserInRoles } from '../../../src/entities/user-in-roles.entity';
 import { Role } from '../../../src/entities/role.entity';
 
