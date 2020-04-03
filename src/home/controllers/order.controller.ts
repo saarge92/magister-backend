@@ -6,12 +6,14 @@ import {
   Req,
   Res,
   UseGuards,
+  Inject,
 } from '@nestjs/common';
 import { BodyInfoDto } from '../dto/order-info.dto';
-import { OrderService } from '../services/OrderService';
 import { Request, Response } from 'express';
 import { LocalGuard } from '../../guards/local.guard';
 import { User } from '../../entities/user.entity';
+import { ORDER_SERVICE } from '../constans/home-constants';
+import { IOrderService } from '../interfaces/i-order-service';
 
 /**
  * Controller for serving request of order
@@ -19,7 +21,7 @@ import { User } from '../../entities/user.entity';
  */
 @Controller('/api/order')
 export class OrderController {
-  constructor(private readonly orderService: OrderService) {
+  constructor(@Inject(ORDER_SERVICE) private readonly orderService: IOrderService) {
   }
 
   /**
@@ -31,7 +33,7 @@ export class OrderController {
   @Post('/')
   @UseGuards(LocalGuard)
   public async serveOrder(@Body() orderInfo: BodyInfoDto, @Res() response: Response,
-                          @Req() request: Request) {
+    @Req() request: Request) {
     const savedOrder = await this.orderService.registerOrder(orderInfo, (request.user as User).id);
     if (savedOrder) response.status(HttpStatus.OK).json({
       message: 'Шаблон обработан',

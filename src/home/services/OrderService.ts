@@ -5,7 +5,7 @@ import { ServiceCompanyEntity } from '../../entities/service.company.entity';
 import { Repository } from 'typeorm';
 import { OrderEntity } from '../../entities/order.entity';
 import { User } from '../../entities/user.entity';
-import any = jasmine.any;
+import { IOrderService } from '../interfaces/i-order-service';
 
 /**
  * Service which contains business logic of ordering
@@ -14,7 +14,7 @@ import any = jasmine.any;
  * @copyright Serdar Durdyev
  */
 @Injectable()
-export class OrderService {
+export class OrderService implements IOrderService {
   constructor(@InjectRepository(ServiceCompanyEntity) private readonly serviceCompanyRepository: Repository<ServiceCompanyEntity>,
               @InjectRepository(OrderEntity) private readonly orderRepository: Repository<OrderEntity>,
               @InjectRepository(User) private readonly userRepository: Repository<User>,

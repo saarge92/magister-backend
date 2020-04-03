@@ -15,23 +15,24 @@ import { OrderController } from './controllers/order.controller';
 import { OrderEntity } from '../entities/order.entity';
 import { OrderService } from './services/OrderService';
 import { User } from '../entities/user.entity';
+import { HomeProvider } from './providers/home-provider';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ServiceCompanyEntity, Music, OrderEntity, User]), UserModule,
-    BullModule.registerQueueAsync(
-      {
-        name: 'audio',
-        useFactory: () => ({
-          redis: {
-            host: 'localhost',
-            port: 6379,
-          },
-        }),
-      },
-    ),
+  BullModule.registerQueueAsync(
+    {
+      name: 'audio',
+      useFactory: () => ({
+        redis: {
+          host: 'localhost',
+          port: 6379,
+        },
+      }),
+    },
+  ),
   ],
   controllers: [ServiceCompanyController, MusicControllerController, OrderController],
-  providers: [ServiceCompanyService, FileService, MusicService, AudioConsumer, MusicFileService, OrderService],
+  providers: [ServiceCompanyService, FileService, MusicService, AudioConsumer, MusicFileService, ...HomeProvider],
 })
 export class HomeModule {
 }
