@@ -1,15 +1,15 @@
-import { User } from "src/entities/user.entity";
-
 /**
  * Interface-contract for role service implemenetation
- * @copyright Serdar Durdyev 
+ * @copyright Serdar Durdyev
  */
+import { User } from '../../../../entities/user.entity';
+
 export interface IRoleService {
-    addUserToRole(roleName: string, user: User);
+  addUserToRole(roleName: string, user: User);
 
-    addUserToRoleByUserId(roleName: string, userId: string);
+  addUserToRoleByUserId(roleName: string, userId: string);
 
-    isUserInRole(roleName: string, user: User): Promise<boolean>;
+  isUserInRole(roleName: string, user: User): Promise<boolean>;
 
-    recordUserInRoleExists(roleId: string, userId: string): Promise<boolean>;
+  recordUserInRoleExists(roleId: string, userId: string): Promise<boolean>;
 }
