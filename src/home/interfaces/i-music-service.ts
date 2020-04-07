@@ -1,7 +1,7 @@
-import { CreateMusicDto } from "../dto/create-music.dto";
-import { User } from "src/entities/user.entity";
-import { Music } from "src/entities/music.entity";
-import { MusicDataDto } from "../dto/MusicDataDto";
+import { CreateMusicDto } from '../dto/create-music.dto';
+import { User } from '../../entities/user.entity';
+import { Music } from '../../entities/music.entity';
+import { MusicDataDto } from '../dto/MusicDataDto';
 
 /**
  * Interface-contract for music service
@@ -9,7 +9,7 @@ import { MusicDataDto } from "../dto/MusicDataDto";
  * @copyright Serdar Durdyev
  */
 export interface IMusicService {
-    postMusic(musicDto: CreateMusicDto, file: any, currentUser: User): Promise<Music>;
+  postMusic(musicDto: CreateMusicDto, file: any, currentUser: User): Promise<Music>;
 
-    getMusicById(id: string, range?: string): Promise<MusicDataDto>;
+  getMusicById(id: string, range?: string): Promise<MusicDataDto>;
 }
