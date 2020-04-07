@@ -9,12 +9,14 @@ import {
   Res,
   UploadedFile, UseGuards,
   UseInterceptors,
+  Inject,
 } from '@nestjs/common';
 import { Request, Response } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { MusicService } from '../services/MusicService';
 import { LocalGuard } from '../../guards/local.guard';
 import { User } from '../../entities/user.entity';
+import { MUSIC_SERVICE } from '../constans/home-constants';
+import { IMusicService } from '../interfaces/i-music-service';
 
 /**
  * Controller for serving requests for music data
@@ -24,7 +26,7 @@ import { User } from '../../entities/user.entity';
 @UseGuards(LocalGuard)
 export class MusicControllerController {
 
-  constructor(private readonly musicService: MusicService) {
+  constructor(@Inject(MUSIC_SERVICE) private readonly musicService: IMusicService) {
   }
 
   /**
@@ -66,7 +68,7 @@ export class MusicControllerController {
       return callback(null, true);
     },
   }))
-  public async postMusic(@Body()createMusicDto, @UploadedFile()file, @Req() request: Request, @Res() response: Response) {
+  public async postMusic(@Body() createMusicDto, @UploadedFile() file, @Req() request: Request, @Res() response: Response) {
     const createdMusic = await this.musicService.postMusic(createMusicDto, file, request.user as User);
     return response.status(HttpStatus.OK).json({
       id: createdMusic.id,

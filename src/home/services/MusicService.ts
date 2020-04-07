@@ -10,16 +10,17 @@ import * as fs from 'fs';
 import { MusicDataDto } from '../dto/MusicDataDto';
 import { MusicFileService } from './MusicFileService';
 import { User } from '../../entities/user.entity';
+import { IMusicService } from '../interfaces/i-music-service';
 
 /**
  * Service for working with music
  * @copyright Serdar Durdyev
  */
 @Injectable()
-export class MusicService {
+export class MusicService implements IMusicService {
   constructor(@InjectRepository(Music) private readonly musicRepository: Repository<Music>,
-              @InjectQueue('audio') private readonly audioQueue: Queue, private readonly fileService: FileService,
-              private readonly musicFileService: MusicFileService) {
+    @InjectQueue('audio') private readonly audioQueue: Queue, private readonly fileService: FileService,
+    private readonly musicFileService: MusicFileService) {
   }
 
   /**

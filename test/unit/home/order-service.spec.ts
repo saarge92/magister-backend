@@ -1,10 +1,12 @@
 import { Test, TestingModule } from '@nestjs/testing';
-import { TypeOrmModule } from '@nestjs/typeorm';
+import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
 import { connectionName, connectionParameters } from '../../connections/connection';
 import { OrderService } from '../../../src/home/services/OrderService';
 import { HomeModule } from '../../../src/home/home.module';
 import { getConnection, getRepository, Repository } from 'typeorm';
 import { OrderEntity } from '../../../src/entities/order.entity';
+import { User } from '../../../src/entities/user.entity';
+import { ServiceCompanyEntity } from '../../../src/entities/service.company.entity';
 
 /**
  * Testing order service functionality
@@ -17,19 +19,33 @@ describe('Order service test', () => {
 
   beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [HomeModule,
+      imports: [
         TypeOrmModule.forRoot({
           ...connectionParameters,
-          entities: ['./**/*.entity.ts'],
+          entities: [OrderEntity, User, ServiceCompanyEntity],
         }),
       ],
+      providers: [OrderService, {
+        provide: getRepositoryToken(OrderEntity),
+        useClass: Repository,
+      },
+        {
+          provide: getRepositoryToken(User),
+          useClass: Repository,
+        },
+        {
+          provide: getRepositoryToken(ServiceCompanyEntity),
+          useClass: Repository,
+        },
+      ],
     }).compile();
-    orderService = module.get<OrderService>(OrderService);
     orderRepository = getRepository(OrderEntity);
+    orderService = new OrderService(getRepository(ServiceCompanyEntity), getRepository(OrderEntity), getRepository((User)));
   });
 
   it('Order service should be defined', () => {
     expect(orderService).toBeDefined();
+    expect(orderRepository).toBeDefined();
   });
 
   it('Get order by id should return common information', async () => {
