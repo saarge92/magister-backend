@@ -15,7 +15,7 @@ import { IAuthService } from '../interfaces/i-auth-service';
 export class UserController {
 
   constructor(@Inject(AUTH_SERVICE_DEPENDENCY) private readonly authService: IAuthService,
-    private readonly websocketServer: GrantedUserGateWay) {
+              private readonly websocketServer: GrantedUserGateWay) {
   }
 
   /**
