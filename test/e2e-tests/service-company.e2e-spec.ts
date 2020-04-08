@@ -17,7 +17,6 @@ import { MusicService } from '../../src/home/services/MusicService';
 import { MusicFileService } from '../../src/home/services/MusicFileService';
 import { Music } from '../../src/entities/music.entity';
 import { BullModule } from '@nestjs/bull';
-import { HomeModule } from '../../src/home/home.module';
 import { UserInRoles } from '../../src/entities/user-in-roles.entity';
 
 /**
@@ -26,12 +25,13 @@ import { UserInRoles } from '../../src/entities/user-in-roles.entity';
 describe('Service Controller tests', () => {
   let app: INestApplication;
   let serviceController: ServiceCompanyController;
+
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [
         TypeOrmModule.forRoot({
           ...connectionParameters,
-          entities: [OrderEntity, User, ServiceCompanyEntity, Music],
+          entities: ['./**/*.entity.ts'],
         }),
         BullModule.registerQueueAsync(
           {
