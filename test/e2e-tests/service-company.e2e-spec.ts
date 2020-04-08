@@ -2,22 +2,10 @@ import { INestApplication } from '@nestjs/common';
 import { Test } from '@nestjs/testing';
 import * as supertestRequest from 'supertest';
 import { ServiceCompanyController } from '../../src/home/controllers/service-company.controller';
-import { getRepositoryToken, TypeOrmModule } from '@nestjs/typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
 import { connectionParameters } from '../connections/connection';
-import { OrderEntity } from '../../src/entities/order.entity';
-import { User } from '../../src/entities/user.entity';
-import { ServiceCompanyEntity } from '../../src/entities/service.company.entity';
-import { ServiceCompanyService } from '../../src/home/services/ServiceCompanyService';
-import { FileService } from '../../src/shared/services/file.service';
-import { getRepository, Repository } from 'typeorm';
-import { HomeProvider } from '../../src/home/providers/home-provider';
 import * as fakerStatic from 'faker';
-import { CreateServiceDto } from '../../src/home/dto/create-service.dto';
-import { MusicService } from '../../src/home/services/MusicService';
-import { MusicFileService } from '../../src/home/services/MusicFileService';
-import { Music } from '../../src/entities/music.entity';
 import { BullModule } from '@nestjs/bull';
-import { UserInRoles } from '../../src/entities/user-in-roles.entity';
 import { HomeModule } from '../../src/home/home.module';
 
 /**
