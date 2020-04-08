@@ -18,6 +18,7 @@ import { MusicFileService } from '../../src/home/services/MusicFileService';
 import { Music } from '../../src/entities/music.entity';
 import { BullModule } from '@nestjs/bull';
 import { UserInRoles } from '../../src/entities/user-in-roles.entity';
+import { HomeModule } from '../../src/home/home.module';
 
 /**
  * Testing Service controller api
@@ -29,6 +30,7 @@ describe('Service Controller tests', () => {
   beforeAll(async () => {
     const moduleRef = await Test.createTestingModule({
       imports: [
+        HomeModule,
         TypeOrmModule.forRoot({
           ...connectionParameters,
           entities: ['./**/*.entity.ts'],
@@ -44,32 +46,6 @@ describe('Service Controller tests', () => {
             }),
           },
         ),
-      ],
-      controllers: [ServiceCompanyController],
-      providers: [ServiceCompanyService, FileService,
-        MusicService,
-        MusicFileService,
-        {
-          provide: getRepositoryToken(Music),
-          useClass: Repository,
-        },
-        {
-          provide: getRepositoryToken(ServiceCompanyEntity),
-          useClass: Repository,
-        },
-        {
-          provide: getRepositoryToken(User),
-          useClass: Repository,
-        },
-        {
-          provide: getRepositoryToken(OrderEntity),
-          useClass: Repository,
-        },
-        {
-          provide: getRepositoryToken(UserInRoles),
-          useClass: Repository,
-        },
-        ...HomeProvider,
       ],
     }).compile();
     app = moduleRef.createNestApplication();
@@ -88,7 +64,7 @@ describe('Service Controller tests', () => {
       .set('Content-Type', 'multipart/form-data')
       .attach('file', 'src/public/services/example.png')
       .field('name', fakerStatic.name.title())
-      .expect(200);
+      .expect(201);
   });
   afterAll(async () => {
     await app.close();
