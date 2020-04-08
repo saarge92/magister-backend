@@ -85,6 +85,7 @@ describe('Service Controller tests', () => {
   it('POST /api/service', async () => {
     return supertestRequest(app.getHttpServer())
       .post('/api/service/')
+      .set('Content-Type', 'multipart/form-data')
       .attach('file', 'src/public/services/example.png')
       .field('name', fakerStatic.name.title())
       .expect(200);
