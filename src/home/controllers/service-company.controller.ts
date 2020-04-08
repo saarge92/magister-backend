@@ -17,6 +17,7 @@ import { Response } from 'express';
 import { SERVICE_COMPANY_SERVICE } from '../constans/home-constants';
 import { IServiceCompanyService } from '../interfaces/i-service-company';
 
+
 @Controller('api/service')
 export class ServiceCompanyController {
   constructor(@Inject(SERVICE_COMPANY_SERVICE) private readonly serviceCompanyService: IServiceCompanyService) {

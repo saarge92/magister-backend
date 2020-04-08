@@ -13,7 +13,7 @@ import { IServiceCompanyService } from '../interfaces/i-service-company';
 @Injectable()
 export class ServiceCompanyService implements IServiceCompanyService {
   constructor(@InjectRepository(ServiceCompanyEntity) private readonly serviceCompanyRepository: Repository<ServiceCompanyEntity>,
-    private readonly fileService: FileService) {
+              private readonly fileService: FileService) {
   }
 
   /**
