@@ -37,7 +37,7 @@
     "cluster": "^0.7.7",
     "compression": "^1.7.4",
     "dotenv": "^8.2.0",
-    "fastify-multipart": "^1.0.4",
+    "fastify-multipart": "^1.0.5",
     "fastify-static": "^2.6.0",
     "mysql": "^2.18.1",
     "passport": "^0.4.1",
